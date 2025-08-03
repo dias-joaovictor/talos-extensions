@@ -38,8 +38,8 @@ jobs:
           docker run -t --rm -v "${PWD}/_out":/out \
             ghcr.io/siderolabs/imager:v1.10.5 installer \
             --system-extension-image ghcr.io/dias-joaovictor/cifs-utils:1.0 \
-            --system-extension-image siderolabs/iscsi-tools \
-            --system-extension-image siderolabs/util-linux-tools
+            --system-extension-image ghcr.io/siderolabs/iscsi-tools:v0.2.0 \
+            --system-extension-image ghcr.io/siderolabs/util-linux-tools:2.40.4
           
           docker load -i ./_out/installer-amd64.tar
           
