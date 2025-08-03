@@ -1,0 +1,8 @@
+version: v1alpha1
+metadata:
+  name: cifs-utils
+  version: 1.0
+  author: HomeLab
+  description: |
+    CIFS/SMB mount helpers (cifs-utils, keyutils) required by the
+    smb.csi.k8s.io driver on Talos Linux.
