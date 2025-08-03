@@ -1,4 +1,4 @@
-name: Build SideroLabs Extension
+name: Build Talos Extension
 
 on:
   workflow_dispatch:
@@ -30,6 +30,19 @@ jobs:
         run: |
           cd extensions/cifs-utils
           docker buildx build --push --platform linux/amd64 -t ghcr.io/dias-joaovictor/cifs-utils:1.0 .
+
+      - name: Build Talos Docker Image
+        run: |
+          cd extensions/cifs-utils
+          
+          docker run -t --rm -v "${PWD}/_out":/out \
+            ghcr.io/siderolabs/imager:v1.10.5 installer \
+            --system-extension-image ghcr.io/dias-joaovictor/cifs-utils:1.0
+          
+          docker load -i ./_out/installer-amd64.tar
+          
+          docker tag ghcr.io/siderolabs/installer-base:v1.10.5 ghcr.io/dias-joaovictor/cifs-utils-installer:1.0
+          docker push ghcr.io/dias-joaovictor/cifs-utils-installer:1.0
 #
 #      - name: Push Docker Image
 #        run: |
