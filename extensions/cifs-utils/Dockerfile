@@ -1,9 +1,12 @@
-FROM alpine:3.20
-RUN apk add --no-cache samba-client cifs-utils
+FROM alpine:3.20 AS build
+RUN apk add --no-cache cifs-utils keyutils \
+ && mkdir -p /ext/rootfs/usr/{sbin,bin} \
+ # copy whatever path the binaries are in *this* image
+ && cp $(command -v mount.cifs)      /ext/rootfs/usr/sbin/ \
+ && cp $(command -v cifs.upcall)     /ext/rootfs/usr/sbin/ \
+ && cp $(command -v request-key)     /ext/rootfs/usr/sbin/ \
+ && cp $(command -v keyctl)          /ext/rootfs/usr/bin/
 
-# copy only the bits you want Talos to get
-RUN mkdir -p /rootfs/usr/bin \
-    && cp /usr/bin/mount.cifs /rootfs/usr/bin \
-    && strip /rootfs/usr/bin/mount.cifs
-
+FROM scratch
 COPY manifest.yaml /
+COPY --from=build /ext/ /
