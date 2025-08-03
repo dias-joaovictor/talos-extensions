@@ -1,8 +1,9 @@
-# Tiny helper base maintained by Sidero Labs
-FROM ghcr.io/siderolabs/extensions:v1.10.5
+FROM alpine:3.20
+RUN apk add --no-cache samba-client cifs-utils
 
-# Install the helpers into /rootfs (inside the extension layer)
-RUN apk add --no-cache cifs-utils keyutils
+# copy only the bits you want Talos to get
+RUN mkdir -p /rootfs/usr/bin \
+    && cp /usr/bin/mount.cifs /rootfs/usr/bin \
+    && strip /rootfs/usr/bin/mount.cifs
 
-# Drop the manifest at the root of the image
 COPY manifest.yaml /
