@@ -26,7 +26,7 @@ jobs:
       - name: Build Docker Image
         run: |
           cd extensions/cifs-utils
-          docker buildx build --push --platform linux/amd64,linux/arm64 -t ghcr.io/dias-joaovictor/cifs-utils:1.0 .
+          docker buildx build --push --platform linux/amd64 -t ghcr.io/dias-joaovictor/cifs-utils:1.0 .
 #
 #      - name: Push Docker Image
 #        run: |
