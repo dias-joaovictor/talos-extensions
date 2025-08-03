@@ -16,12 +16,17 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-#      - name: Build Docker Image
-#        run: |
-#          docker build -t cars-backend:latest .
+      - name: Build Docker Image
+        run: |
+          cd extensions/cifs-utils
+          docker buildx build --push --platform linux/amd64,linux/arm64 -t ghcr.io/dias-joaovictor/cifs-utils:1.0 .
 #
 #      - name: Push Docker Image
 #        run: |
